@@ -1,0 +1,5 @@
+certificates
+https://jamielinux.com/docs/openssl-certificate-authority/sign-server-and-client-certificates.html
+
+with sans support
+https://openssl-ca.readthedocs.io/en/latest/sign-server-and-client-certificates.html
