@@ -22,12 +22,15 @@ func main() {
 	if err != nil {
 		log.Fatalf("error dialing %v", err)
 	}
-	//err = conn.Handshake()
-	//if err != nil {
-	//	log.Fatalf("handshake failed, %v", err)
-	//}
 	_, err = conn.Write([]byte("some data"))
 	if err != nil {
 		log.Fatalf("write failed, %v", err)
 	}
+	buff := make([]byte, 1024)
+	_, err = conn.Read(buff) // add deadline?
+	if err != nil {
+		log.Fatalf("read failed, %v", err)
+	}
+	log.Printf("received data: %v\n", string(buff))
+
 }

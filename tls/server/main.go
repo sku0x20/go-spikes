@@ -29,6 +29,10 @@ func main() {
 			log.Fatalf("Read failed, %v", err)
 		}
 		log.Println(string(buff))
+		_, err = conn.Write([]byte("sending some data"))
+		if err != nil {
+			log.Fatalf("write failed, %v", err)
+		}
 	}
 
 }
