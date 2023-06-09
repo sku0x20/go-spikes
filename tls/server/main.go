@@ -2,10 +2,18 @@ package main
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"log"
+	"os"
 )
 
 func main() {
+	clientRootCA := x509.NewCertPool()
+	file, err := os.ReadFile("/home/exp/go-projects/go-spikes/tls/intermediate/certs/intermediate.cert.pem")
+	if err != nil {
+		log.Fatal(err)
+	}
+	clientRootCA.AppendCertsFromPEM(file)
 	cert, err := tls.LoadX509KeyPair(
 		"/home/exp/go-projects/go-spikes/tls/intermediate/certs/san.example.com.fullchain-cert.pem",
 		"/home/exp/go-projects/go-spikes/tls/intermediate/private/san.example.com.key.pem",
@@ -13,7 +21,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	cfg := &tls.Config{Certificates: []tls.Certificate{cert}}
+	cfg := &tls.Config{
+		Certificates: []tls.Certificate{cert},
+		ClientCAs:    clientRootCA,
+		ClientAuth:   tls.RequireAndVerifyClientCert,
+	}
 	listener, err := tls.Listen("tcp", ":14777", cfg)
 	if err != nil {
 		log.Fatal(err)

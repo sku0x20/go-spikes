@@ -31,3 +31,5 @@ getting the common name from the certificate
 giving user process distinction
 one way is to, `echo "user" &>/dev/null && bash -c "usr supplied command"
 second way is to name that bash -c process. the process spawned by it will anyway tell the commands.
+
+if let kind of thing in go? i saw it somewhere.
