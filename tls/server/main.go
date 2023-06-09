@@ -3,7 +3,9 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"fmt"
 	"log"
+	"net"
 	"os"
 )
 
@@ -42,6 +44,7 @@ func main() {
 		}
 		log.Println(string(buff))
 		_, err = conn.Write([]byte("sending some data"))
+		_, err = conn.Write([]byte(fmt.Sprintf("client name is %s", getClientName(conn))))
 		if err != nil {
 			log.Fatalf("write failed, %v", err)
 		}
@@ -49,4 +52,11 @@ func main() {
 
 }
 
-// openssl s_client -servername www.example.com -connect localhost:14777 -CAfile tls/root/ca/certs/ca.cert.pem
+func getClientName(conn net.Conn) string {
+	conn2, ok := conn.(*tls.Conn)
+	if !ok {
+		log.Fatal("unable to downcast net.Conn to *tls.Conn")
+	}
+	emailId := conn2.ConnectionState().PeerCertificates[0].EmailAddresses[0]
+	return emailId
+}

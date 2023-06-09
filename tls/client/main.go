@@ -41,4 +41,10 @@ func main() {
 	}
 	log.Printf("received data: %v\n", string(buff))
 
+	_, err = conn.Read(buff)
+	if err != nil {
+		log.Fatalf("read failed, %v", err)
+	}
+	log.Printf("received data: %v\n", string(buff))
+
 }

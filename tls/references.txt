@@ -7,6 +7,8 @@ https://openssl-ca.readthedocs.io/en/latest/sign-server-and-client-certificates.
 go run tls/client/main.go
 go run tls/server/main.go
 
+openssl s_client -servername www.example.com -connect localhost:14777 -CAfile tls/root/ca/certs/ca.cert.pem
+
 ==== notes ====
 
 read messages via bufferio and all that.
