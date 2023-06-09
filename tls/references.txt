@@ -3,3 +3,31 @@ https://jamielinux.com/docs/openssl-certificate-authority/sign-server-and-client
 
 with sans support
 https://openssl-ca.readthedocs.io/en/latest/sign-server-and-client-certificates.html
+
+go run tls/client/main.go
+go run tls/server/main.go
+
+==== notes ====
+
+read messages via bufferio and all that.
+bufio.NewReader(c).ReadString('\n')
+net.Conn.RemoteAddr().String()
+strconv.Itoa(random())
+
+go tls,
+- tls on clientside verify server
+need to give ca chain separately to tls library. if it can understand from full chain including server certificate. good then.
+only omission allowed is of root, else everything to have to append to the services.myeglu.com full chain, which by itself includes it's own certificate and let's encrypt chain.
+need to sign the certificate on regular intervals and concat the chain.
+if it didn't work out can go with no intermediate certificate on server side, just use the services.myglu.com certificate. like how hook is using and stuff.
+
+- tls on serverside verify client
+verfiying with custom ca
+tls library - revocation list
+getting the common name from the certificate
+
+
+- process distinction
+giving user process distinction
+one way is to, `echo "user" &>/dev/null && bash -c "usr supplied command"
+second way is to name that bash -c process. the process spawned by it will anyway tell the commands.
