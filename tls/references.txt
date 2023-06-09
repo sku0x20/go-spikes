@@ -8,6 +8,9 @@ go run tls/client/main.go
 go run tls/server/main.go
 
 openssl s_client -servername www.example.com -connect localhost:14777 -CAfile tls/root/ca/certs/ca.cert.pem
+openssl crl -in crl/intermediate.crl.pem -out crl/intermediate.crl.der -outform DER
+
+https://www.cossacklabs.com/blog/tls-validation-implementing-ocsp-and-crl-in-go/#configuring-ocsp-crl-in-go
 
 ==== notes ====
 
@@ -15,6 +18,10 @@ read messages via bufferio and all that.
 bufio.NewReader(c).ReadString('\n')
 net.Conn.RemoteAddr().String()
 strconv.Itoa(random())
+
+i may not even need to load client side key if i use GetClientCertificate instead of Certificates. idk???
+it's fine for now.
+
 
 go tls,
 - tls on clientside verify server
@@ -24,9 +31,9 @@ need to sign the certificate on regular intervals and concat the chain.
 if it didn't work out can go with no intermediate certificate on server side, just use the services.myglu.com certificate. like how hook is using and stuff.
 
 - tls on serverside verify client
-verfiying with custom ca
-tls library - revocation list
+verifying with custom ca
 getting the common name from the certificate
+revocation list
 
 
 - process distinction

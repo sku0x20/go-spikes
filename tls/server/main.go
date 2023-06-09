@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"fmt"
 	"log"
 	"net"
@@ -23,10 +24,24 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	revocationFile, err := os.ReadFile("/home/exp/go-projects/go-spikes/tls/intermediate/crl/intermediate.crl.der")
+	revocationList, err := x509.ParseRevocationList(revocationFile)
+	if err != nil {
+		log.Fatal(err)
+	}
 	cfg := &tls.Config{
 		Certificates: []tls.Certificate{cert},
 		ClientCAs:    clientRootCA,
 		ClientAuth:   tls.RequireAndVerifyClientCert,
+		VerifyPeerCertificate: func(rawCerts [][]byte, verifiedChains [][]*x509.Certificate) error {
+			clientCertSerialNumber := verifiedChains[0][0].SerialNumber
+			for _, revokedCert := range revocationList.RevokedCertificates {
+				if revokedCert.SerialNumber.Cmp(clientCertSerialNumber) == 0 {
+					return errors.New("certificate is revoked")
+				}
+			}
+			return nil
+		},
 	}
 	listener, err := tls.Listen("tcp", ":14777", cfg)
 	if err != nil {
@@ -40,6 +55,7 @@ func main() {
 		buff := make([]byte, 1024)
 		_, err = conn.Read(buff) // add deadline?
 		if err != nil {
+			// this will fail when the client certificate is revoked
 			log.Fatalf("Read failed, %v", err)
 		}
 		log.Println(string(buff))

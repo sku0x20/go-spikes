@@ -2,3 +2,5 @@ V	240617064445Z		1000	unknown	/C=IN/ST=Karnataka/O=example/CN=www.example.com/em
 R	240618071020Z	230609072644Z	1001	unknown	/C=IN/ST=Karnataka/O=example/CN=san.example.com
 R	240618072651Z	230609073528Z	1002	unknown	/C=IN/ST=Karnataka/O=example/CN=san.example.com
 V	240618074432Z		1003	unknown	/C=IN/ST=Karnataka/O=example/CN=san.example.com
+V	240618103830Z		1004	unknown	/C=IN/ST=Karnataka/O=example/CN=example-client/emailAddress=client@example.com
+V	240618123009Z		1005	unknown	/C=IN/ST=Karnataka/O=example/CN=client revoked/emailAddress=clientrevoked@email.com

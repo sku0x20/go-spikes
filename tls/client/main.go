@@ -15,8 +15,8 @@ func main() {
 	}
 	roots.AppendCertsFromPEM(file)
 	cert, err := tls.LoadX509KeyPair(
-		"/home/exp/go-projects/go-spikes/tls/intermediate/certs/client.cert.pem",
-		"/home/exp/go-projects/go-spikes/tls/intermediate/private/client.key.pem",
+		"/home/exp/go-projects/go-spikes/tls/intermediate/certs/client-revoked.cert.pem",
+		"/home/exp/go-projects/go-spikes/tls/intermediate/private/client-revoked.key.pem",
 	)
 	if err != nil {
 		log.Fatal(err)
